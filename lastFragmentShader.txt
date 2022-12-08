@@ -1,0 +1,29 @@
+#version 330
+
+
+
+in vec3 normal;
+in vec3 fragPos;
+
+vec3 lightPos = vec3(0.0f, 1.0f, 3.0f);
+vec3 viewPos = vec3(0.0f, 0.0f, -10.0f);
+vec3 lightColor = vec3(0.0f, 0.0f, 0.0f);
+vec3 objectColor = vec3(0.0f, 1.0f, 0.0f);
+float spec = 0.2;
+float diffuse = 0.6;
+
+in vec3 LightIntensity;
+void main(){
+
+
+	vec3 norm = normalize(normal);
+	vec3 lightDir = normalize(lightPos = fragPos);
+	vec3 viewDir = normalize(viewPos - fragPos);
+	vec3 reflectDir = reflect(lightDir, norm);
+
+	float k = 0.7;
+	float new = pow(max(dot(norm, lightDir), 0.0), (k+1)) * pow((1 - max(dot(norm, viewDir), 0.0)), (1-k));
+    vec3 result1 = 0.5 * new * objectColor;
+
+	gl_FragColor = vec4 (result1, 1.0);
+}
